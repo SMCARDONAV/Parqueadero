@@ -74,6 +74,7 @@ public class Principal {
                     //La fila (posicion) debe ser mayor a 1 porque no hay pisos 0 ni negativos
                     //La fila (posición) debe de ser menor o igual al tamaño de la matriz
                     //La columna(espacio) debe de ser mayor o igual que 1 y menor o igual que la dimensión definida al inicio del programa
+                    // Se verifica que los pisos y espacios deben estar dentro de las dimensiones de la matriz (i)(j)
                     if (posicion >= 1 && posicion <= Vehiculo.TAMANO && espacio >= 1 && espacio <= celdas && posicion <=pisos) {
 
                         disponibilidad = Vehiculo.consultarDisponibilidad(posicion, espacio);
