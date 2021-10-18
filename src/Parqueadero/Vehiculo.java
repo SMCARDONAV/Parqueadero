@@ -110,7 +110,7 @@ public class Vehiculo  {
         }
         return aux;
     }
-    
+    //Método que ordena por valor comercial los vehiculos creados desde el menor valor hasta el mayor
     public static Vehiculo [] VehiculosOrdenados (Vehiculo [] a){
         
         Vehiculo temp;
