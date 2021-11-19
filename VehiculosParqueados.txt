@@ -1,0 +1,2 @@
+Moto {placa=try789, marca=rt, color=plata, ingreso=Fri Nov 19 17:44:46 COT 2021, valorComercial=3000000}
+

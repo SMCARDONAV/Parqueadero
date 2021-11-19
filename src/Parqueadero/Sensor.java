@@ -69,6 +69,21 @@ public class Sensor {
         
         SENSORES[posicion][espacio] = a;
     }
+    
+    public static void liberarSensor(int posicion, int espacio) {
+        /* Se resta un 1 a los atributos posición y espacio debido a que la matriz comienzan a partir de 0 
+        y el usuario para la primera posiciòn ingresa 1 y asi se da con las demás posiciones
+         */
+        posicion = posicion - 1;
+        espacio = espacio - 1;
+        for (int i = 0; i < SENSORES.length; i++) {
+            for (int j = 0; j < SENSORES[i].length; j++) {
+                if (i==posicion && j==espacio){
+                    SENSORES[posicion][espacio].setEstado(0);
+                }
+            }
+        }
+    }
 
     public static void llenarSensorDisponible(Sensor a) {
 

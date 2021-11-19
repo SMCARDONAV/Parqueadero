@@ -1,8 +1,12 @@
 package Parqueadero;
 
-public class Vehiculo  {
+import java.util.Date;
+import java.io.*;
+
+public class Vehiculo {
 
     private String placa, marca, color;
+    private Date ingreso;
     private int valorComercial = 0;
     public static int CANTIDAD = 0;
     public static int TAMANO;
@@ -12,15 +16,16 @@ public class Vehiculo  {
 
     }
 
-    public Vehiculo(String p, String m, String c) {
-        this(p, m, c, 30000000);
+    public Vehiculo(String p, String m, String c, Date t) {
+        this(p, m, c, t, 30000000);
     }
 
-    public Vehiculo(String p, String m, String c, int v) {
+    public Vehiculo(String p, String m, String c, Date t, int v) {
         this.placa = p;
         this.marca = m;
         this.color = c;
         this.valorComercial = v;
+        this.ingreso = t;
         Vehiculo.CANTIDAD = CANTIDAD + 1;
     }
 
@@ -56,9 +61,17 @@ public class Vehiculo  {
         this.valorComercial = valorComercial;
     }
 
+    public Date getIngreso() {
+        return ingreso;
+    }
+
+    public void setIngreso(Date ingreso) {
+        this.ingreso = ingreso;
+    }
+
     @Override
     public String toString() {
-        return "Vehiculo{" + "placa=" + this.placa + ", marca=" + this.marca + ", color=" + this.color + ", valorComercial=" + this.valorComercial + '}';
+        return " {" + "placa=" + placa + ", marca=" + marca + ", color=" + color + ", ingreso=" + ingreso + ", valorComercial=" + valorComercial + '}';
     }
 
     public static String toStringVehiculos() {
@@ -67,7 +80,7 @@ public class Vehiculo  {
         for (int i = 0; i < VEHICULOS.length; i++) {
             for (int j = 0; j < VEHICULOS[i].length; j++) {
                 if (VEHICULOS[i][j] != null) {
-                    ocupados = ocupados + (VEHICULOS[i][j] + "\n");
+                    ocupados = ocupados + (VEHICULOS[i][j].toString() + "\n");
                 }
             }
         }
@@ -91,6 +104,7 @@ public class Vehiculo  {
 
         //Guarda en un vector todos los objetos vehiculo para luego ser organizados por el atributo valor comercial
     }
+
     // Método que llena el vector con la información que se encuentra en la matriz
     public static Vehiculo[] llenarVector() {
 
@@ -110,23 +124,23 @@ public class Vehiculo  {
         }
         return aux;
     }
+
     //Método que ordena por valor comercial los vehiculos creados desde el menor valor hasta el mayor
-    public static Vehiculo [] VehiculosOrdenados (Vehiculo [] a){
-        
+    public static Vehiculo[] VehiculosOrdenados(Vehiculo[] a) {
+
         Vehiculo temp;
-        for(int i = 1; i < a.length; i++){
-            for(int j = 0; j < a.length -i; j++){
-                if(a[j].getValorComercial()>a[j+1].getValorComercial()){
-                temp = a[j];
-                a[j] = a[j+1];
-                a[j+1] = temp;
-                }            
-            }       
-        }   
+        for (int i = 1; i < a.length; i++) {
+            for (int j = 0; j < a.length - i; j++) {
+                if (a[j].getValorComercial() > a[j + 1].getValorComercial()) {
+                    temp = a[j];
+                    a[j] = a[j + 1];
+                    a[j + 1] = temp;
+                }
+            }
+        }
         return a;
     }
 
-  
     public static boolean consultarDisponibilidad(int posicion, int espacio) {
 
         boolean dispo = false;
@@ -164,6 +178,69 @@ public class Vehiculo  {
             busqueda = ("No se encontraron vehiculos con el color " + color + " ingresado");
         }
         return busqueda;
+    }
+
+    public static Date informacionIngreso(int posicion, int espacio) {
+
+        Date horaIngreso = null;
+
+        posicion = posicion - 1;
+        espacio = espacio - 1;
+
+        for (int i = 0; i < VEHICULOS.length; i++) {
+            for (int j = 0; j < VEHICULOS[i].length; j++) {
+                if (i == posicion && j == espacio) {
+                    horaIngreso = VEHICULOS[posicion][espacio].getIngreso();
+                }
+            }
+        }
+        return horaIngreso;
+    }
+
+    public static void liberarVehiculo(int posicion, int espacio) {
+        /* Se resta un 1 a los atributos posición y espacio debido a que la matriz comienzan a partir de 0 
+        y el usuario para la primera posiciòn ingresa 1 y asi se da con las demás posiciones
+         */
+        posicion = posicion - 1;
+        espacio = espacio - 1;
+        for (int i = 0; i < VEHICULOS.length; i++) {
+            for (int j = 0; j < VEHICULOS[i].length; j++) {
+                if (i == posicion && j == espacio) {
+                    VEHICULOS[posicion][espacio] = null;
+                }
+            }
+        }
+    }
+
+    public static void txtVehiculos() {
+
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try {
+            fichero = new FileWriter("./VehiculosParqueados.txt");
+            pw = new PrintWriter(fichero);
+
+            for (int i = 0; i < VEHICULOS.length; i++) {
+                for (int j = 0; j < VEHICULOS[i].length; j++) {
+                    if (VEHICULOS[i][j] != null) {
+                        pw.println(VEHICULOS[i][j].toString() + "\n");
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Nuevamente aprovechamos el finally para 
+                // asegurarnos que se cierra el fichero.
+                if (null != fichero) {
+                    fichero.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
     }
 
 }
